@@ -36,11 +36,9 @@ public class DefaultExcelConverter implements ExcelConverter {
 
     private void processTargetSheetsVisibility(Workbook workbook, int[] targetSheets) {
         WorksheetCollection worksheets = workbook.getWorksheets();
-        if (targetSheets == null || targetSheets.length == 0) {
-            worksheets.get(0).setVisible(true);
-        } else {
-            for (int i = 0; i < targetSheets.length; i++) {
-                worksheets.get(i).setVisible(true);
+        if (targetSheets != null && targetSheets.length > 0) {
+            for (final int sheetNo : targetSheets) {
+                worksheets.get(sheetNo).setVisible(true);
             }
         }
     }
