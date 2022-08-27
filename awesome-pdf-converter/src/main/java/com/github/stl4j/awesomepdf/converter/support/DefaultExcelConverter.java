@@ -17,7 +17,7 @@ public class DefaultExcelConverter implements ExcelConverter {
     }
 
     @Override
-    public void toPDF(String targetFilePath, int[] targetSheets) throws Exception {
+    public void saveAsPDF(String targetFilePath, int[] targetSheets) throws Exception {
         targetFilePath = targetFilePath == null || targetFilePath.trim().isEmpty() ? guessTargetFilePath(sourceFilePath) : targetFilePath;
         Workbook workbook = new Workbook(sourceFilePath);
         PdfSaveOptions saveOptions = new PdfSaveOptions();
@@ -26,12 +26,12 @@ public class DefaultExcelConverter implements ExcelConverter {
         workbook.save(targetFilePath);
     }
 
-    public void toPDF(int[] targetSheets) throws Exception {
-        toPDF(AUTO_GUESS_TARGET_FILE_PATH, targetSheets);
+    public void saveAsPDF(int[] targetSheets) throws Exception {
+        saveAsPDF(AUTO_GUESS_TARGET_FILE_PATH, targetSheets);
     }
 
-    public void toPDF() throws Exception {
-        toPDF(AUTO_GUESS_TARGET_FILE_PATH, DEFAULT_FIRST_SHEET);
+    public void saveAsPDF() throws Exception {
+        saveAsPDF(AUTO_GUESS_TARGET_FILE_PATH, DEFAULT_FIRST_SHEET);
     }
 
     private void processTargetSheetsVisibility(Workbook workbook, int[] targetSheets) {
