@@ -5,6 +5,8 @@ import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.aspose.cells.WorksheetCollection;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +31,12 @@ public class ExcelConverter implements Converter {
 
     public ExcelConverter(InputStream inputStream) throws Exception {
         this();
+        workbook = new Workbook(inputStream);
+    }
+
+    public ExcelConverter(ByteArrayOutputStream outputStream) throws Exception {
+        this();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
         workbook = new Workbook(inputStream);
     }
 

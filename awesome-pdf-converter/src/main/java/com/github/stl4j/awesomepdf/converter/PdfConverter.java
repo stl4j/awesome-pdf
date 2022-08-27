@@ -2,6 +2,7 @@ package com.github.stl4j.awesomepdf.converter;
 
 import com.github.stl4j.awesomepdf.converter.support.ExcelConverter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 public abstract class PdfConverter {
@@ -12,6 +13,10 @@ public abstract class PdfConverter {
 
     public static ExcelConverter fromExcel(InputStream inputStream) throws Exception {
         return new ExcelConverter(inputStream);
+    }
+
+    public static ExcelConverter fromExcel(ByteArrayOutputStream outputStream) throws Exception {
+        return new ExcelConverter(outputStream);
     }
 
 }
