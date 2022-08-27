@@ -5,18 +5,31 @@ import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.aspose.cells.WorksheetCollection;
 
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ExcelConverter implements Converter {
 
-    private final String sourceFilePath;
+    private Workbook workbook;
+
+    private String defaultTargetFilePath;
 
     private final Set<Integer> targetSheets;
 
-    public ExcelConverter(String sourceFilePath) {
-        this.sourceFilePath = sourceFilePath;
+    public ExcelConverter() {
         targetSheets = new HashSet<>();
+    }
+
+    public ExcelConverter(String sourceFilePath) throws Exception {
+        this();
+        workbook = new Workbook(sourceFilePath);
+        defaultTargetFilePath = getDefaultTargetFilePath(sourceFilePath);
+    }
+
+    public ExcelConverter(InputStream inputStream) throws Exception {
+        this();
+        workbook = new Workbook(inputStream);
     }
 
     public ExcelConverter sheet(int sheet) {
@@ -33,8 +46,13 @@ public class ExcelConverter implements Converter {
 
     @Override
     public void saveAsPDF(String targetFilePath) throws Exception {
-        targetFilePath = targetFilePath == null || targetFilePath.trim().isEmpty() ? guessTargetFilePath(sourceFilePath) : targetFilePath;
-        Workbook workbook = new Workbook(sourceFilePath);
+        if (targetFilePath == null || targetFilePath.trim().isEmpty()) {
+            if (defaultTargetFilePath == null) {
+                throw new IllegalArgumentException("You must specify a target file path to save PDF if you are reading Excel from file stream");
+            } else {
+                targetFilePath = defaultTargetFilePath;
+            }
+        }
         PdfSaveOptions saveOptions = new PdfSaveOptions();
         saveOptions.setOnePagePerSheet(true);
         processTargetSheetsVisibility(workbook);
