@@ -8,6 +8,7 @@ import com.aspose.cells.WorksheetCollection;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,6 +54,12 @@ public class ExcelConverter implements Converter {
     }
 
     @Override
+    public void writeToPDF(OutputStream outputStream) throws Exception {
+        processTargetSheetsVisibility(workbook);
+        workbook.save(outputStream, getDefaultPdfSaveOptions());
+    }
+
+    @Override
     public void saveAsPDF(String targetFilePath) throws Exception {
         if (targetFilePath == null || targetFilePath.trim().isEmpty()) {
             if (defaultTargetFilePath == null) {
@@ -61,10 +68,8 @@ public class ExcelConverter implements Converter {
                 targetFilePath = defaultTargetFilePath;
             }
         }
-        PdfSaveOptions saveOptions = new PdfSaveOptions();
-        saveOptions.setOnePagePerSheet(true);
         processTargetSheetsVisibility(workbook);
-        workbook.save(targetFilePath);
+        workbook.save(targetFilePath, getDefaultPdfSaveOptions());
     }
 
     public void saveAsPDF() throws Exception {
@@ -83,6 +88,12 @@ public class ExcelConverter implements Converter {
             final int targetSheetNo = worksheet.getIndex() + 1;
             worksheet.setVisible(targetSheets.contains(targetSheetNo));
         }
+    }
+
+    private PdfSaveOptions getDefaultPdfSaveOptions() {
+        PdfSaveOptions saveOptions = new PdfSaveOptions();
+        saveOptions.setOnePagePerSheet(true);
+        return saveOptions;
     }
 
 }

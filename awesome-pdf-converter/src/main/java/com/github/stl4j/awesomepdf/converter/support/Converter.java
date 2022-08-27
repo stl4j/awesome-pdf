@@ -1,6 +1,10 @@
 package com.github.stl4j.awesomepdf.converter.support;
 
+import java.io.OutputStream;
+
 public interface Converter {
+
+    void writeToPDF(OutputStream outputStream) throws Exception;
 
     void saveAsPDF(String targetFilePath) throws Exception;
 
