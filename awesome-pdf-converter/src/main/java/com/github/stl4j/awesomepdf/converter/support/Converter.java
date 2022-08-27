@@ -2,6 +2,8 @@ package com.github.stl4j.awesomepdf.converter.support;
 
 public interface Converter {
 
+    void saveAsPDF(String targetFilePath) throws Exception;
+
     default String guessTargetFilePath(String sourceFilePath) {
         if (sourceFilePath == null || sourceFilePath.trim().isEmpty()) {
             throw new IllegalArgumentException("'sourceFilePath' must not be null or empty");

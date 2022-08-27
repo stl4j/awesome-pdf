@@ -1,11 +1,11 @@
 package com.github.stl4j.awesomepdf.converter;
 
-import com.github.stl4j.awesomepdf.converter.support.DefaultExcelConverter;
+import com.github.stl4j.awesomepdf.converter.support.ExcelConverter;
 
 public abstract class PdfConverter {
 
-    public static DefaultExcelConverter fromExcel(String sourceFilePath) {
-        return new DefaultExcelConverter(sourceFilePath);
+    public static ExcelConverter fromExcel(String sourceFilePath) {
+        return new ExcelConverter(sourceFilePath);
     }
 
 }
