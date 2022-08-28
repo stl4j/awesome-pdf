@@ -23,6 +23,7 @@
     </developers>
 
     <modules>
+        <module>awesome-pdf-all</module>
         <module>awesome-pdf-converter</module>
     </modules>
 
@@ -37,6 +38,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.github.stl4j</groupId>
+                <artifactId>awesome-pdf-converter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.aspose</groupId>
                 <artifactId>aspose-cells</artifactId>
