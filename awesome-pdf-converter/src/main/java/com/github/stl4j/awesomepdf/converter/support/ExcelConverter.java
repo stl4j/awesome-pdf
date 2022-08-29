@@ -16,7 +16,7 @@ import java.util.Set;
  * This class implements the interface {@link Converter}.
  * It will mainly responsible for converting an Excel file to the corresponding PDF document.
  *
- * @author stl4j <im.zhouchen@foxmail.com>
+ * @author stl4j - im.zhouchen@foxmail.com
  * @see Converter
  * @since 0.0.1
  */
@@ -44,7 +44,7 @@ public class ExcelConverter implements Converter {
     private final Set<Integer> targetSheets;
 
     /**
-     * Default constructor.
+     * Default constructor for initializing something.
      */
     public ExcelConverter() {
         targetSheets = new HashSet<>();
@@ -140,6 +140,8 @@ public class ExcelConverter implements Converter {
     /**
      * This method is similar to {@link #saveAsPdf(String)}, the difference is that you don't need to specify the {@code targetFilePath}.
      * In this case, the target file path will be equivalent to the {@code sourceFilePath}.
+     *
+     * @throws Exception This exception will be thrown when writing the PDF document.
      */
     public void saveAsPdf() throws Exception {
         saveAsPdf(null);
@@ -151,7 +153,7 @@ public class ExcelConverter implements Converter {
      * @param workbook The {@link Workbook} object instance.
      */
     private void processTargetSheetsVisibility(Workbook workbook) {
-        // All the sheets are visible by default if target sheets not specified
+        // All the sheets are visible by default if target sheets not specified.
         if (targetSheets.isEmpty()) {
             return;
         }

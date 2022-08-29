@@ -13,9 +13,9 @@ import java.io.InputStream;
  * <blockquote><pre>
  *     PdfConverter.fromExcel("test.xslx").saveAsPdf();
  *     PdfConverter.fromExcel("test.xslx").saveAsPdf("test.pdf");
- * </pre></blockquote><p>
+ * </pre></blockquote>
  *
- * @author stl4j <im.zhouchen@foxmail.com>
+ * @author stl4j - im.zhouchen@foxmail.com
  * @see ExcelConverter
  * @since 0.0.1
  */
@@ -27,21 +27,30 @@ public final class PdfConverter {
     }
 
     /**
-     * @see ExcelConverter(String)
+     * @param sourceFilePath The source file path of the Excel document.
+     * @return The {@link ExcelConverter} object instance.
+     * @throws Exception This exception will be thrown when reading the Excel document.
+     * @see ExcelConverter
      */
     public static ExcelConverter fromExcel(String sourceFilePath) throws Exception {
         return new ExcelConverter(sourceFilePath);
     }
 
     /**
-     * @see ExcelConverter(InputStream)
+     * @param inputStream The input stream of the Excel document content.
+     * @return The {@link ExcelConverter} object instance.
+     * @throws Exception This exception will be thrown when reading the Excel document.
+     * @see ExcelConverter
      */
     public static ExcelConverter fromExcel(InputStream inputStream) throws Exception {
         return new ExcelConverter(inputStream);
     }
 
     /**
-     * @see ExcelConverter(ByteArrayOutputStream)
+     * @param outputStream The byte array output stream holding the Excel document content.
+     * @return The {@link ExcelConverter} object instance.
+     * @throws Exception This exception will be thrown when reading the Excel document.
+     * @see ExcelConverter
      */
     public static ExcelConverter fromExcel(ByteArrayOutputStream outputStream) throws Exception {
         return new ExcelConverter(outputStream);
