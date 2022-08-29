@@ -88,20 +88,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Attach Java docs code when `maven package` executed -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -110,6 +96,20 @@
             <id>release</id>
             <build>
                 <plugins>
+                    <!-- Attach Java docs code when `maven package` executed, only for release -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.4.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!-- Maven GPG plugin is used to sign the components with the following configuration, only for release -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
