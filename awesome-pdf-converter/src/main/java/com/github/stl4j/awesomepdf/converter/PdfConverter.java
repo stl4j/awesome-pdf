@@ -1,8 +1,8 @@
 package com.github.stl4j.awesomepdf.converter;
 
-import com.github.stl4j.awesomepdf.converter.support.ExcelConverter;
+import com.github.stl4j.awesomepdf.converter.excel.ExcelConverter;
 
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -11,8 +11,7 @@ import java.io.InputStream;
  * <p>
  * Just use like this:
  * <blockquote><pre>
- *     PdfConverter.fromExcel("test.xslx").saveAsPdf();
- *     PdfConverter.fromExcel("test.xslx").saveAsPdf("test.pdf");
+ *     PdfConverter.fromExcel("test.xlsx").saveAsPdf("test.pdf");
  * </pre></blockquote>
  *
  * @author stl4j - im.zhouchen@foxmail.com
@@ -23,37 +22,27 @@ import java.io.InputStream;
 public final class PdfConverter {
 
     private PdfConverter() {
-        // An utility class should not be instantiated directly.
+        // An utility class should not be instantiated by external classes.
     }
 
     /**
-     * @param sourceFilePath The source file path of the Excel document.
-     * @return The {@link ExcelConverter} object instance.
-     * @throws Exception This exception will be thrown when reading the Excel document.
+     * @param sourceFilePath The file path of the Excel document.
+     * @return The {@link ExcelConverter} instance, for easy to use chain calls of method.
+     * @throws IOException This exception will be thrown when reading the Excel document.
      * @see ExcelConverter
      */
-    public static ExcelConverter fromExcel(String sourceFilePath) throws Exception {
+    public static ExcelConverter fromExcel(String sourceFilePath) throws IOException {
         return new ExcelConverter(sourceFilePath);
     }
 
     /**
      * @param inputStream The input stream of the Excel document content.
-     * @return The {@link ExcelConverter} object instance.
-     * @throws Exception This exception will be thrown when reading the Excel document.
+     * @return The {@link ExcelConverter} instance, for easy to use chain calls of method.
+     * @throws IOException This exception will be thrown when reading the Excel document.
      * @see ExcelConverter
      */
-    public static ExcelConverter fromExcel(InputStream inputStream) throws Exception {
+    public static ExcelConverter fromExcel(InputStream inputStream) throws IOException {
         return new ExcelConverter(inputStream);
-    }
-
-    /**
-     * @param outputStream The byte array output stream holding the Excel document content.
-     * @return The {@link ExcelConverter} object instance.
-     * @throws Exception This exception will be thrown when reading the Excel document.
-     * @see ExcelConverter
-     */
-    public static ExcelConverter fromExcel(ByteArrayOutputStream outputStream) throws Exception {
-        return new ExcelConverter(outputStream);
     }
 
 }
