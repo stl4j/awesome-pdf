@@ -20,8 +20,8 @@ public interface DocumentConverter {
      * Save the PDF document to the specified file path on the disk.
      *
      * @param targetFilePath The file path to save the PDF document.
-     * @throws DocumentException This exception will be thrown when writing the PDF document.
-     * @throws IOException       This exception will be thrown when writing the PDF document.
+     * @throws DocumentException This exception may be thrown when writing the PDF document.
+     * @throws IOException       This exception may be thrown when writing the PDF document.
      */
     void save(String targetFilePath) throws DocumentException, IOException;
 }

@@ -11,7 +11,7 @@ import java.io.InputStream;
  * <p>
  * Just use like this:
  * <blockquote><pre>
- *     PdfConverter.fromExcel("test.xlsx").saveAsPdf("test.pdf");
+ *     PdfConverter.fromExcel("test.xlsx").convert().save("test.pdf");
  * </pre></blockquote>
  *
  * @author stl4j - im.zhouchen@foxmail.com
@@ -28,7 +28,7 @@ public final class PdfConverter {
     /**
      * @param sourceFilePath The file path of the Excel document.
      * @return The {@link ExcelConverter} instance, for easy to use chain calls of method.
-     * @throws IOException This exception will be thrown when reading the Excel document.
+     * @throws IOException This exception may be thrown when reading the Excel document.
      * @see ExcelConverter
      */
     public static ExcelConverter fromExcel(String sourceFilePath) throws IOException {
@@ -38,7 +38,7 @@ public final class PdfConverter {
     /**
      * @param inputStream The input stream of the Excel document content.
      * @return The {@link ExcelConverter} instance, for easy to use chain calls of method.
-     * @throws IOException This exception will be thrown when reading the Excel document.
+     * @throws IOException This exception may be thrown when reading the Excel document.
      * @see ExcelConverter
      */
     public static ExcelConverter fromExcel(InputStream inputStream) throws IOException {

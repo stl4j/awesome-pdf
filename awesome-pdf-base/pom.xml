@@ -11,17 +11,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>awesome-pdf-converter</artifactId>
+    <artifactId>awesome-pdf-base</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>io.github.stl4j</groupId>
-            <artifactId>awesome-pdf-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
         </dependency>
     </dependencies>
 
