@@ -1,3 +1,5 @@
 *.iml
+*.pdf
+*.xlsx
 .idea/
 target/
