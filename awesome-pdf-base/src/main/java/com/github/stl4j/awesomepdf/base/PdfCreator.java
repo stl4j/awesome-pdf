@@ -34,16 +34,23 @@ public class PdfCreator {
     /**
      * Create a new PDF document and open it.
      *
-     * @return Return {@code this} reference for method chain calls.
      * @throws DocumentException This exception may be thrown when creating or opening the document.
      */
-    public PdfCreator newDocument() throws DocumentException {
+    public void newDocument() throws DocumentException {
         document = new Document();
         outputStream = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         writer.setPdfVersion(PdfWriter.PDF_VERSION_1_7);
         document.open();
-        return this;
+    }
+
+    /**
+     * Create a new page for the PDF document.
+     *
+     * @see Document#newPage()
+     */
+    public void newPage() {
+        document.newPage();
     }
 
     /**
@@ -51,14 +58,12 @@ public class PdfCreator {
      *
      * @param columnWidths The column width of the table component.
      * @param pdfCells     The cells you want to add to the table component.
-     * @return Return {@code this} reference for method chain calls.
      * @throws DocumentException This exception may be thrown when adding table component to the document.
      * @see PdfTable
      */
-    public PdfCreator addTable(float[] columnWidths, List<PdfPCell> pdfCells) throws DocumentException {
+    public void addTable(float[] columnWidths, List<PdfPCell> pdfCells) throws DocumentException {
         PdfTable table = PdfTable.newTable(columnWidths).addCells(pdfCells);
         document.add(table.getTableElement());
-        return this;
     }
 
     /**

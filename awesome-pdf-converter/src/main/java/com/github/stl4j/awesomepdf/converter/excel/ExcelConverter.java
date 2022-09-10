@@ -4,7 +4,6 @@ import com.github.stl4j.awesomepdf.base.PdfCreator;
 import com.github.stl4j.awesomepdf.converter.DocumentConverter;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
@@ -32,27 +31,22 @@ public class ExcelConverter implements DocumentConverter {
     private Workbook workbook;
 
     /**
+     * The {@link PdfCreator} instance, for creating and rendering PDF document.
+     */
+    private final PdfCreator pdfCreator;
+
+    /**
      * This {@link Set} will be used to specify which sheets of the Excel to be included in the PDF document.
      * All the sheets will be converted by default if target sheets not specified.
      */
     private final Set<Integer> targetSheets;
 
     /**
-     * This array holds the width value of each column in the PDF {@link PdfPTable} component.
-     */
-    private float[] pdfTableColumnWidths;
-
-    /**
-     * This list will contain all the target {@link PdfPCell} instance.
-     */
-    private final List<PdfPCell> pdfCells;
-
-    /**
      * Default constructor for initializing something.
      */
     public ExcelConverter() {
+        pdfCreator = new PdfCreator();
         targetSheets = new HashSet<>();
-        pdfCells = new ArrayList<>();
     }
 
     /**
@@ -111,14 +105,17 @@ public class ExcelConverter implements DocumentConverter {
      * Resolve all the sheets, rows, and columns of the specified Excel file and convert them to a corresponding PDF document.
      *
      * @return Return {@code this} reference for method chain calls.
+     * @throws DocumentException This exception may be thrown when opening the PDF document or adding components to it.
      * @see CellConverter#convert(Sheet, Cell)
      */
-    public ExcelConverter convert() {
+    public ExcelConverter convert() throws DocumentException {
+        pdfCreator.newDocument();
         // Sheets
         final int sheetCount = workbook.getNumberOfSheets();
         for (int sheetIndex = 0; sheetIndex < sheetCount; sheetIndex++) {
             // All sheets will be converted by default if no target sheet is specified.
             if (targetSheets.isEmpty() || targetSheets.contains(sheetIndex)) {
+                pdfCreator.newPage();
                 convertRowsAndColumns(sheetIndex);
             }
         }
@@ -129,18 +126,20 @@ public class ExcelConverter implements DocumentConverter {
      * Just for reducing the complexity of the method {@link #convert()}.
      *
      * @param sheetIndex Index of the sheet number, zero-based.
+     * @throws DocumentException This exception may be thrown when adding components to the PDF document.
      * @see #convert()
      */
-    private void convertRowsAndColumns(int sheetIndex) {
-        // Rows
+    private void convertRowsAndColumns(int sheetIndex) throws DocumentException {
         Sheet sheet = workbook.getSheetAt(sheetIndex);
-        final int rowCount = sheet.getPhysicalNumberOfRows();
-        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-            // Cells
+        final int physicalCellCount = sheet.getRow(0).getPhysicalNumberOfCells();
+        float[] pdfTableColumnWidths = new float[physicalCellCount];
+        List<PdfPCell> pdfCells = new ArrayList<>();
+
+        // Rows
+        for (int rowIndex = 0, rowCount = sheet.getPhysicalNumberOfRows(); rowIndex < rowCount; rowIndex++) {
             Row row = sheet.getRow(rowIndex);
-            final int cellCount = row.getPhysicalNumberOfCells();
-            pdfTableColumnWidths = new float[cellCount];
-            for (int columnIndex = 0; columnIndex < cellCount; columnIndex++) {
+            // Cells
+            for (int columnIndex = 0, cellCount = row.getPhysicalNumberOfCells(); columnIndex < cellCount; columnIndex++) {
                 Cell cell = row.getCell(columnIndex);
                 pdfTableColumnWidths[columnIndex] = 100;
                 CellConverter cellConverter = new CellConverter();
@@ -150,6 +149,8 @@ public class ExcelConverter implements DocumentConverter {
                 }
             }
         }
+
+        pdfCreator.addTable(pdfTableColumnWidths, pdfCells);
     }
 
     /**
@@ -158,9 +159,8 @@ public class ExcelConverter implements DocumentConverter {
      * @see DocumentConverter#save(String)
      */
     @Override
-    public void save(String targetFilePath) throws DocumentException, IOException {
-        PdfCreator creator = new PdfCreator();
-        creator.newDocument().addTable(pdfTableColumnWidths, pdfCells).save(targetFilePath);
+    public void save(String targetFilePath) throws IOException {
+        pdfCreator.save(targetFilePath);
     }
 
 }
