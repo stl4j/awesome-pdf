@@ -80,25 +80,29 @@ public class ExcelConverter implements DocumentConverter {
     /**
      * Specify which sheet will be written to the PDF document.
      *
-     * @param sheet Index of the sheet number, zero-based, for example, 0, 1, 2, 3, etc.
+     * @param sheetIndex Index of the sheet number, zero-based, for example, 0, 1, 2, 3, etc.
      * @return Return {@code this} reference for method chain calls.
      * @see #sheets(int...)
      */
-    public ExcelConverter sheet(int sheet) {
-        targetSheets.add(sheet);
+    public ExcelConverter sheet(int sheetIndex) {
+        final int sheetCount = workbook.getNumberOfSheets();
+        if (sheetIndex < 0 || sheetIndex > sheetCount - 1) {
+            throw new IndexOutOfBoundsException(String.format("Sheet index %d out of range", sheetIndex));
+        }
+        targetSheets.add(sheetIndex);
         return this;
     }
 
     /**
      * This method is similar to {@link #sheet(int)}, the difference is that you can specify multiple parameters.
      *
-     * @param sheets Index of the sheet number, zero-based, for example, 0, 1, 2, 3, etc.
+     * @param sheetIndexes Index of the sheet number, zero-based, for example, 0, 1, 2, 3, etc.
      * @return Return {@code this} reference for method chain calls.
      * @see #sheet(int)
      */
-    public ExcelConverter sheets(int... sheets) {
-        for (final int sheet : sheets) {
-            targetSheets.add(sheet);
+    public ExcelConverter sheets(int... sheetIndexes) {
+        for (final int sheetIndex : sheetIndexes) {
+            sheet(sheetIndex);
         }
         return this;
     }
@@ -156,7 +160,7 @@ public class ExcelConverter implements DocumentConverter {
     @Override
     public void save(String targetFilePath) throws DocumentException, IOException {
         PdfCreator creator = new PdfCreator();
-        creator.newDocument().addTable(pdfTableColumnWidths, pdfCells).save("test.pdf");
+        creator.newDocument().addTable(pdfTableColumnWidths, pdfCells).save(targetFilePath);
     }
 
 }
