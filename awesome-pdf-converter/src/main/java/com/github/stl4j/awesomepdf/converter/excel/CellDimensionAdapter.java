@@ -33,6 +33,7 @@ public class CellDimensionAdapter implements CellAdapter {
      */
     public CellDimensionAdapter() {
         HORIZONTAL_ALIGNMENT_MAP.put(HorizontalAlignment.LEFT, Element.ALIGN_LEFT);
+        HORIZONTAL_ALIGNMENT_MAP.put(HorizontalAlignment.GENERAL, Element.ALIGN_LEFT);
         HORIZONTAL_ALIGNMENT_MAP.put(HorizontalAlignment.CENTER, Element.ALIGN_CENTER);
         HORIZONTAL_ALIGNMENT_MAP.put(HorizontalAlignment.RIGHT, Element.ALIGN_RIGHT);
         VERTICAL_ALIGNMENT_MAP.put(VerticalAlignment.TOP, Element.ALIGN_TOP);
