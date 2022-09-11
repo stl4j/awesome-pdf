@@ -23,7 +23,7 @@ public class PdfText {
      */
     public PdfText(String text) {
         columnText = new ColumnText(null);
-        Chunk chunk = new Chunk(text);
+        Chunk chunk = text == null || text.trim().isEmpty() ? Chunk.createWhitespace(text) : new Chunk(text);
         columnText.addText(chunk);
     }
 

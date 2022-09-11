@@ -3,10 +3,8 @@ package com.github.stl4j.awesomepdf.converter.excel;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPCell;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.EnumMap;
-import java.util.List;
 
 /**
  * This class is used to convert the properties about cell dimensions,
@@ -55,9 +53,7 @@ public class CellDimensionAdapter implements CellAdapter {
      * @param pdfCell    {@link PdfPCell} object of itext pdf library.
      */
     private void adaptRowAndColumnSpan(Sheet excelSheet, Cell excelCell, PdfPCell pdfCell) {
-        final int rowIndex = excelCell.getRowIndex();
-        final int columnIndex = excelCell.getColumnIndex();
-        final int[] rowAndColumnSpan = calculateRowAndColumnSpan(excelSheet, rowIndex, columnIndex);
+        final int[] rowAndColumnSpan = CellConverterUtils.calculateRowAndColumnSpan(excelSheet, excelCell);
         pdfCell.setRowspan(rowAndColumnSpan[0]);
         pdfCell.setColspan(rowAndColumnSpan[1]);
     }
@@ -75,33 +71,6 @@ public class CellDimensionAdapter implements CellAdapter {
         pdfCell.setHorizontalAlignment(HORIZONTAL_ALIGNMENT_MAP.get(horizontalAlignment));
         pdfCell.setVerticalAlignment(VERTICAL_ALIGNMENT_MAP.get(verticalAlignment));
         pdfCell.setUseAscender(true);
-    }
-
-    /**
-     * Calculates the row span and column span, return an array of int values.
-     * The first element is the row span, the second is the column span.
-     *
-     * @param excelSheet  {@link Sheet} object of Apache POI library.
-     * @param rowIndex    The row index of current cell, zero-based.
-     * @param columnIndex The column index of current cell, zero-based.
-     * @return An array of int values, the first element is the row span, the second is the column span.
-     */
-    private int[] calculateRowAndColumnSpan(Sheet excelSheet, int rowIndex, int columnIndex) {
-        final int[] rowAndColumnSpan = new int[]{1, 1};
-        List<CellRangeAddress> mergedRegions = excelSheet.getMergedRegions();
-        for (CellRangeAddress mergedRegion : mergedRegions) {
-            final int firstRow = mergedRegion.getFirstRow();
-            final int lastRow = mergedRegion.getLastRow();
-            final int firstColumn = mergedRegion.getFirstColumn();
-            final int lastColumn = mergedRegion.getLastColumn();
-            if (mergedRegion.isInRange(rowIndex, columnIndex)) {
-                final int rowSpan = lastRow - firstRow + 1;
-                final int columnSpan = lastColumn - firstColumn + 1;
-                rowAndColumnSpan[0] = rowSpan;
-                rowAndColumnSpan[1] = columnSpan;
-            }
-        }
-        return rowAndColumnSpan;
     }
 
 }

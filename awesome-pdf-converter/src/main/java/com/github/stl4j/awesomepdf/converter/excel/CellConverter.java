@@ -42,17 +42,21 @@ public class CellConverter {
      * @see ExcelConverter#convert()
      */
     public PdfPCell convert(Sheet excelSheet, Cell excelCell) {
+        // If the string cell value is empty, maybe this cell is a merged cell.
+        // We don't need to create a new PdfPCell object in this case.
         final String stringCellValue = excelCell.getStringCellValue();
-        // When the string cell value is null or empty, maybe this cell has a merged region.
-        // We only need the non-null and non-empty value to create new PdfPCell object in this case.
-        if (stringCellValue != null && stringCellValue.trim().length() > 0) {
-            PdfPCell pdfCell = new PdfPCell();
-            for (CellAdapter cellAdapter : cellAdapters) {
-                cellAdapter.adapt(excelSheet, excelCell, pdfCell);
-            }
-            return pdfCell;
+        final boolean isEmptyCellValue = stringCellValue == null || stringCellValue.trim().isEmpty();
+        if (isEmptyCellValue && CellConverterUtils.isMergedCell(excelSheet, excelCell)) {
+            return null;
         }
-        return null;
+
+        // If the string cell value is empty, but we can confirm that it is not a merged cell.
+        // This means that the value of this cell is indeed empty.
+        PdfPCell pdfCell = new PdfPCell();
+        for (CellAdapter cellAdapter : cellAdapters) {
+            cellAdapter.adapt(excelSheet, excelCell, pdfCell);
+        }
+        return pdfCell;
     }
 
 }
