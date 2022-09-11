@@ -19,9 +19,9 @@ public class PdfTable {
     private final PdfPTable tableElement;
 
     /**
-     * Constructor with a {@code float} array parameter to specify the column width of {@link #tableElement}.
+     * Constructor with a {@code float} array parameter to specify the column widths of {@link #tableElement}.
      *
-     * @param columnWidths The column width of {@link #tableElement}.
+     * @param columnWidths The column widths of {@link #tableElement}.
      */
     public PdfTable(float[] columnWidths) {
         tableElement = new PdfPTable(columnWidths);

@@ -56,7 +56,7 @@ public class PdfCreator {
     /**
      * Add a table component to the PDF document.
      *
-     * @param columnWidths The column width of the table component.
+     * @param columnWidths The column widths of the table component.
      * @param pdfCells     The cells you want to add to the table component.
      * @throws DocumentException This exception may be thrown when adding table component to the document.
      * @see PdfTable

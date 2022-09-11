@@ -130,18 +130,25 @@ public class ExcelConverter implements DocumentConverter {
      * @see #convert()
      */
     private void convertRowsAndColumns(int sheetIndex) throws DocumentException {
-        Sheet sheet = workbook.getSheetAt(sheetIndex);
-        final int physicalCellCount = sheet.getRow(0).getPhysicalNumberOfCells();
-        float[] pdfTableColumnWidths = new float[physicalCellCount];
+        float[] pdfTableColumnWidths = new float[0];
         List<PdfPCell> pdfCells = new ArrayList<>();
 
+        Sheet sheet = workbook.getSheetAt(sheetIndex);
         // Rows
         for (int rowIndex = 0, rowCount = sheet.getPhysicalNumberOfRows(); rowIndex < rowCount; rowIndex++) {
             Row row = sheet.getRow(rowIndex);
             // Cells
             for (int columnIndex = 0, cellCount = row.getPhysicalNumberOfCells(); columnIndex < cellCount; columnIndex++) {
+                // Calculate the max number of columns in current row.
+                if (cellCount > pdfTableColumnWidths.length) {
+                    pdfTableColumnWidths = new float[cellCount];
+                }
+                // Avoid duplicate assignment.
+                if (pdfTableColumnWidths[columnIndex] == 0) {
+                    pdfTableColumnWidths[columnIndex] = sheet.getColumnWidthInPixels(columnIndex);
+                }
+                // Convert current cell.
                 Cell cell = row.getCell(columnIndex);
-                pdfTableColumnWidths[columnIndex] = 100;
                 CellConverter cellConverter = new CellConverter();
                 PdfPCell pdfCell = cellConverter.convert(sheet, cell);
                 if (pdfCell != null) {
@@ -150,7 +157,10 @@ public class ExcelConverter implements DocumentConverter {
             }
         }
 
-        pdfCreator.addTable(pdfTableColumnWidths, pdfCells);
+        // Skip the empty sheet.
+        if (pdfTableColumnWidths.length > 0) {
+            pdfCreator.addTable(pdfTableColumnWidths, pdfCells);
+        }
     }
 
     /**
