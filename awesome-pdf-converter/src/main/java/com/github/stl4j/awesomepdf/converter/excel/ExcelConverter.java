@@ -106,9 +106,10 @@ public class ExcelConverter implements DocumentConverter {
      *
      * @return Return {@code this} reference for method chain calls.
      * @throws DocumentException This exception may be thrown when opening the PDF document or adding components to it.
+     * @throws IOException       This exception may be thrown when converting the Excel cell to PDF cell.
      * @see CellConverter#convert(Sheet, Cell)
      */
-    public ExcelConverter convert() throws DocumentException {
+    public ExcelConverter convert() throws DocumentException, IOException {
         pdfCreator.newDocument();
         // Sheets
         final int sheetCount = workbook.getNumberOfSheets();
@@ -127,9 +128,10 @@ public class ExcelConverter implements DocumentConverter {
      *
      * @param sheetIndex Index of the sheet number, zero-based.
      * @throws DocumentException This exception may be thrown when adding components to the PDF document.
+     * @throws IOException       This exception may be thrown when converting the Excel cell to PDF cell.
      * @see #convert()
      */
-    private void convertRowsAndColumns(int sheetIndex) throws DocumentException {
+    private void convertRowsAndColumns(int sheetIndex) throws DocumentException, IOException {
         float[] pdfTableColumnWidths = new float[0];
         List<PdfPCell> pdfCells = new ArrayList<>();
 
@@ -149,7 +151,7 @@ public class ExcelConverter implements DocumentConverter {
                 }
                 // Convert current cell.
                 Cell cell = row.getCell(columnIndex);
-                CellConverter cellConverter = new CellConverter();
+                CellConverter cellConverter = new CellConverter(workbook);
                 PdfPCell pdfCell = cellConverter.convert(sheet, cell);
                 if (pdfCell != null) {
                     pdfCells.add(pdfCell);
@@ -171,6 +173,7 @@ public class ExcelConverter implements DocumentConverter {
     @Override
     public void save(String targetFilePath) throws IOException {
         pdfCreator.save(targetFilePath);
+        workbook.close();
     }
 
 }

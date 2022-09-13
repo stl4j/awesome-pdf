@@ -1,9 +1,12 @@
 package com.github.stl4j.awesomepdf.converter.excel;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +29,11 @@ public class CellConverter {
     /**
      * Default constructor, initialize something.
      */
-    public CellConverter() {
+    public CellConverter(Workbook workbook) {
         cellAdapters = new ArrayList<>();
-        cellAdapters.add(new CellValueAdapter());
-        cellAdapters.add(new CellColorAdapter());
+        cellAdapters.add(new CellValueAdapter(workbook));
         cellAdapters.add(new CellDimensionAdapter());
+        cellAdapters.add(new CellColorAdapter());
     }
 
     /**
@@ -39,9 +42,11 @@ public class CellConverter {
      * @param excelSheet {@link Sheet} object of Apache POI library.
      * @param excelCell  {@link Cell} object of Apache POI library.
      * @return {@link PdfPCell} object of itext pdf library.
+     * @throws DocumentException This exception may be thrown when converting the Excel cell to PDF cell.
+     * @throws IOException       This exception may be thrown when converting the Excel cell to PDF cell.
      * @see ExcelConverter#convert()
      */
-    public PdfPCell convert(Sheet excelSheet, Cell excelCell) {
+    public PdfPCell convert(Sheet excelSheet, Cell excelCell) throws DocumentException, IOException {
         // If the string cell value is empty, maybe this cell is a merged cell.
         // We don't need to create a new PdfPCell object in this case.
         final String stringCellValue = excelCell.getStringCellValue();

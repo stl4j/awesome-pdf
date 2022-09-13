@@ -1,6 +1,7 @@
 package com.github.stl4j.awesomepdf.base.component;
 
 import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.ColumnText;
 
 /**
@@ -17,13 +18,18 @@ public class PdfText {
     private final ColumnText columnText;
 
     /**
+     * The {@link Chunk} element of itext pdf library.
+     */
+    private final Chunk chunk;
+
+    /**
      * Constructor with a string parameter to specify the text content of {@link #columnText}.
      *
      * @param text The text content of current component.
      */
     public PdfText(String text) {
         columnText = new ColumnText(null);
-        Chunk chunk = text == null || text.trim().isEmpty() ? Chunk.createWhitespace(text) : new Chunk(text);
+        chunk = text == null || text.trim().isEmpty() ? Chunk.createWhitespace(text) : new Chunk(text);
         columnText.addText(chunk);
     }
 
@@ -32,6 +38,17 @@ public class PdfText {
      */
     public static PdfText newText(String text) {
         return new PdfText(text);
+    }
+
+    /**
+     * Set font for this text component.
+     *
+     * @param font A {@link Font} object of itext pdf library.
+     * @return Return {@code this} reference for method chain calls.
+     */
+    public PdfText font(Font font) {
+        chunk.setFont(font);
+        return this;
     }
 
     /**

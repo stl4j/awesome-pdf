@@ -1,8 +1,11 @@
 package com.github.stl4j.awesomepdf.converter.excel;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
+
+import java.io.IOException;
 
 /**
  * This interface is the root interface of all Excel cell adapter classes.
@@ -24,6 +27,8 @@ public interface CellAdapter {
      * @param excelSheet {@link Sheet} object of Apache POI library.
      * @param excelCell  {@link Cell} object of Apache POI library.
      * @param pdfCell    {@link PdfPCell} object of itext pdf library.
+     * @throws DocumentException This exception may be thrown when converting the Excel cell to PDF cell.
+     * @throws IOException       This exception may be thrown when converting the Excel cell to PDF cell.
      */
-    void adapt(Sheet excelSheet, Cell excelCell, PdfPCell pdfCell);
+    void adapt(Sheet excelSheet, Cell excelCell, PdfPCell pdfCell) throws DocumentException, IOException;
 }
